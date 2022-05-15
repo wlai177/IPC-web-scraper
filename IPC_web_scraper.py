@@ -1,9 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 
+print("*** Program started ***")
 
 start_page = 0
-end_page = 1    # Use 1375 for the real end page
+end_page = 2    # Use 1375 for the real end page
+
+def parseLocation(location):
+    location_list = location.split(", ", 2)
+    if 2 == len(location_list):
+        location_list.append(location_list[1])
+        location_list[1] = ""
+    return location_list
+
 
 for page in range (start_page, end_page):
 
@@ -30,7 +39,11 @@ for page in range (start_page, end_page):
             location = company[1].text
             num_cert = company[2].text
 
-            print(name, location, num_cert)
+            # print(name, location, num_cert)
+
+            location = parseLocation(location)
+
+            print(location)
             
     except Exception as e:
         print(e)
