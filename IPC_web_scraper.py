@@ -18,9 +18,9 @@ def parseLocation(location):
 print("*** Program started ***")
 
 start_page = 0
-end_page = 11 # Use 1384 for the real end page (as of May 2022)
+end_page = 1384 # Use 1384 for the real end page (as of May 2022)
 
-f = open('export.csv', 'w', newline='')
+f = open('IPC_export.csv', 'w', encoding="utf-8", newline='')
 writer = csv.writer(f)
 writer.writerow(["Company", "City", "State", "Country", "Number of Certs"])
 
