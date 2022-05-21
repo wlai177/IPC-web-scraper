@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 import requests, csv
 
+# Get the location string and split it into a list of city, state, and country
+# Returns a list with the length of 3
 def parseLocation(location):
     location_list = location.split(", ", 2)
     if 2 == len(location_list):
@@ -16,13 +18,16 @@ def parseLocation(location):
 print("*** Program started ***")
 
 start_page = 0
-end_page = 10    # Use 1375 for the real end page
+end_page = 11 # Use 1384 for the real end page (as of May 2022)
 
 f = open('export.csv', 'w', newline='')
 writer = csv.writer(f)
 writer.writerow(["Company", "City", "State", "Country", "Number of Certs"])
 
 for page in range (start_page, end_page):
+
+    percent_complete = round(100*(page-start_page)/(end_page-start_page))
+    print(f"Parsing page {page+1}/{end_page} \t {percent_complete}% complete", end="\r")
 
     try:
         URL = "https://www.ipc.org/cert-search?page=" + str(page)
@@ -47,12 +52,7 @@ for page in range (start_page, end_page):
             location = company[1].text
             num_cert = company[2].text
 
-            # print(name, location, num_cert)
-
             location = parseLocation(location)
-
-            # print(location)
-            print(name, location, num_cert)
 
             writer.writerow([name, location[0], location[1], location[2], num_cert])
             
@@ -60,4 +60,8 @@ for page in range (start_page, end_page):
         print(e)
 
 f.close()
+
+print(50 * " ", end="\r")
+print(f"Parsed from page {start_page+1} to page {end_page}")
+
 print("*** Program finished ***")
